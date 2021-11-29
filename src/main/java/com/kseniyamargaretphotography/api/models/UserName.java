@@ -7,7 +7,11 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.*;
 
@@ -15,20 +19,22 @@ import static javax.persistence.GenerationType.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserName {
+public class UserName implements Serializable {
     @Id
-    @GeneratedValue(strategy = AUTO)
-    private long id;
-
-    @OneToOne
-    private User userId;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long userNameId;
 
     @Column(nullable = false)
     private String userName;
 
-    @Column(nullable = false)
-    @CreationTimestamp
-    private LocalDate createDate;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private LocalDate endDate;
+    @Column(name = "create_date", nullable = false)
+    @CreationTimestamp
+    private Timestamp createDate;
+
+    @Column(name = "end_date")
+    private Timestamp endDate;
 }

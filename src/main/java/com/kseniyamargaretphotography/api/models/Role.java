@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.GenerationType.AUTO;
+import static javax.persistence.FetchType.*;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
@@ -18,8 +16,8 @@ import static javax.persistence.GenerationType.AUTO;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
-    private long roleId;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long roleId;
 
     @Column(nullable = false, unique = true, length = 100)
     private String roleName;
@@ -33,6 +31,6 @@ public class Role {
     @Column(nullable = false)
     private boolean uploadFiles;
 
-    @ManyToMany
-    private List<User> users = new ArrayList<>();
+    @ManyToOne(fetch = LAZY)
+    private User user;
 }
