@@ -5,19 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
-import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.IDENTITY;
-import static org.hibernate.annotations.LazyCollectionOption.*;
 
 /**
  * @author rkutsyy
@@ -48,9 +43,9 @@ public class User {
     @Email(regexp = "Add validation later here", message = "Add additional validation message")
     private String email;
 
-    @OneToOne
     @JsonIgnore
-    @JoinColumn(name = "user_name_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "username_id")
     private UserName userName;
 
     @Column(name = "create_date", nullable = false)
@@ -60,9 +55,12 @@ public class User {
     @Column(name = "last_login_date")
     private Timestamp lastLoginDate;
 
-    @Column(name = "roles", nullable = false)
-    @LazyCollection(FALSE)
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Role> role = new ArrayList<>();
+    @Column(name = "roles", nullable = false)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
+    private Set<Role> roles;
 }

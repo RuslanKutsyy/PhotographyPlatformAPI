@@ -9,9 +9,6 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.GenerationType.*;
 
@@ -19,12 +16,14 @@ import static javax.persistence.GenerationType.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "usernames")
 public class UserName implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "username_id")
     private Long userNameId;
 
-    @Column(nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String userName;
 
     @OneToOne

@@ -1,19 +1,17 @@
 package com.kseniyamargaretphotography.api.controllers;
 
-import com.kseniyamargaretphotography.api.repositories.IRoleRepository;
-import com.kseniyamargaretphotography.api.repositories.IUserNameRepository;
-import com.kseniyamargaretphotography.api.repositories.IUserRepository;
 import com.kseniyamargaretphotography.api.models.Role;
 import com.kseniyamargaretphotography.api.models.User;
 import com.kseniyamargaretphotography.api.models.UserName;
+import com.kseniyamargaretphotography.api.repository.RoleRepository;
+import com.kseniyamargaretphotography.api.repository.UserNameRepository;
+import com.kseniyamargaretphotography.api.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.http.MediaType.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -23,9 +21,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/home")
 public class HomeController {
 
-    IUserRepository userRepository;
-    IRoleRepository roleRepository;
-    IUserNameRepository userNameRepository;
+    private final UserRepository userRepository;
+    private final UserNameRepository userNameRepository;
+    private final RoleRepository roleRepository;
 
     @RequestMapping(value = "/getUser", method = GET, produces = APPLICATION_JSON_VALUE)
     public User index() {
@@ -36,10 +34,10 @@ public class HomeController {
         User userRuslan = new User();
         userRuslan.setFirstName("Ruslan");
         userRuslan.setLastName("Kutsyy");
-        userRuslan.setUserNameId(userName);
-        List<Role> roles = new ArrayList<>();
+        userRuslan.setUserName(userName);
+        Set<Role> roles = new HashSet<>();
         roles.add(admin);
-        userRuslan.setRole(roles);
+        userRuslan.setRoles(roles);
 
         userRuslan = userRepository.save(userRuslan);
 
