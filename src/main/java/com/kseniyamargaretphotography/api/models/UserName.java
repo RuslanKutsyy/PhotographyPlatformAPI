@@ -3,6 +3,7 @@ package com.kseniyamargaretphotography.api.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import static javax.persistence.GenerationType.*;
@@ -35,10 +37,15 @@ public class UserName {
     private User user;
 
     @Column(name = "create_date")
-    @CreatedDate
-    private LocalDate createDate;
+    @CreationTimestamp
+    private Timestamp createDate;
 
     @Column(name = "end_date")
-    @Future
-    private LocalDate endDate;
+    private Timestamp endDate;
+
+    public UserName(String userName, User user) {
+        this.userName = userName;
+        this.user = user;
+    }
+
 }

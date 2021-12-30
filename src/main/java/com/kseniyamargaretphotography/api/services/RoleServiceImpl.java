@@ -3,23 +3,17 @@ package com.kseniyamargaretphotography.api.services;
 import com.kseniyamargaretphotography.api.interfaces.RoleService;
 import com.kseniyamargaretphotography.api.models.Role;
 import com.kseniyamargaretphotography.api.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
-
-    @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public Role findById(Long roleId) {

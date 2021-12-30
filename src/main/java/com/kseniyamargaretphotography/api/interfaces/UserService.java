@@ -15,9 +15,9 @@ public interface UserService {
 
     User findByUserName(String userName);
 
-    User save(UserDTO userDto);
+    void register(UserDTO userDto);
+
+    void save(User user);
 
     void delete(Long id);
-
-    void delete(User user);
 }

@@ -9,4 +9,8 @@ public interface UserNameService {
     UserName findByUserId(Long userId);
 
     UserName findByUserName(String userName);
+
+    void saveOrUpdate(UserName userName);
+
+    void delete(Long userNameId);
 }

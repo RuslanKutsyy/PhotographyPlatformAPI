@@ -8,10 +8,6 @@ public class ValidationFailedException extends ApiException {
 
     private Collection<FieldError> errors;
 
-    public ValidationFailedException(String message) {
-        super(message);
-    }
-
     public ValidationFailedException(String message, Collection<FieldError> errors) {
         super(message);
         this.errors = errors;

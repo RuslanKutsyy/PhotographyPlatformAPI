@@ -3,7 +3,6 @@ package com.kseniyamargaretphotography.api.controllers;
 import com.kseniyamargaretphotography.api.DTO.UserDTO;
 import com.kseniyamargaretphotography.api.exceptions.ValidationFailedException;
 import com.kseniyamargaretphotography.api.interfaces.UserService;
-import com.kseniyamargaretphotography.api.models.User;
 import com.kseniyamargaretphotography.api.repository.RoleRepository;
 import com.kseniyamargaretphotography.api.repository.UserNameRepository;
 import lombok.AllArgsConstructor;
@@ -26,18 +25,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UserController {
 
     private final UserService userService;
-    private final UserNameRepository userNameRepository;
-    private final RoleRepository roleRepository;
-    private final MessageSource messageSource;
 
     @RequestMapping(value = "/registration", method = POST, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO, BindingResult errors) {
         if (errors.hasErrors()) {
-//            return new ResponseEntity<Object>(errors.getFieldErrors(), HttpStatus.BAD_REQUEST);
             throw new ValidationFailedException("Validation Failed", errors.getFieldErrors());
         }
-
-
-        return new ResponseEntity<User>(userService.save(userDTO), HttpStatus.ACCEPTED);
+        userService.register(userDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
