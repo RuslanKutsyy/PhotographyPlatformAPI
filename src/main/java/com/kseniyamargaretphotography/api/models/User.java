@@ -8,17 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.Collection;
 
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * @author rkutsyy
- * @version 1.0
- * @since 2021/11/23
- */
 @Entity
 @Data
 @Table(name = "users")
@@ -31,22 +29,28 @@ public class User {
     private Long id;
 
     @Column(name = "first_name")
-    @Size(min = 3, max = 50, message = "First Name length is invalid")
+    @NotBlank(message = "{default.value.required}")
+    @Size(min = 3, max = 50, message = "{default.invalid.length}")
     private String firstName;
 
     @Column(name = "last_name")
-    @Size(min = 3, max = 50, message = "First Name length is invalid")
+    @NotBlank(message = "{default.value.required}")
+    @Size(min = 3, max = 50, message = "{default.invalid.length}")
     private String lastName;
 
     @Size(min = 3, max = 50)
+    @NotBlank(message = "{default.value.required}")
     @Column(name = "email", nullable = false, unique = true)
-    @Email(regexp = "Add validation later here", message = "Add additional validation message")
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "{default.value.invalid}")
     private String email;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "username_id")
     private UserName userName;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = LAZY, orphanRemoval = true, mappedBy = "user")
+    private Collection<Password> password;
 
     @Column(name = "create_date", nullable = false)
     @CreationTimestamp
@@ -57,10 +61,10 @@ public class User {
 
     @JsonIgnore
     @Column(name = "roles", nullable = false)
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
-    private Set<Role> roles;
+    private Collection<Role> roles;
 }

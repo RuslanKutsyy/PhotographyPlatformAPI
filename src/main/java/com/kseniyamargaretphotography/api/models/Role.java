@@ -1,12 +1,14 @@
 package com.kseniyamargaretphotography.api.models;
 
+import com.kseniyamargaretphotography.api.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
-import java.util.List;
+import java.util.Collection;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -21,8 +23,9 @@ public class Role {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String roleName;
+    @NotEmpty
+    @Column(nullable = false, unique = true, length = 50)
+    private String name;
 
     @Column(nullable = false)
     private boolean canManageUsers;
@@ -33,6 +36,11 @@ public class Role {
     @Column(nullable = false)
     private boolean uploadFiles;
 
-    @ManyToMany
-    private List<User> user;
+    @Column(name = "users", nullable = false)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}
+    )
+    private Collection<User> users;
 }
