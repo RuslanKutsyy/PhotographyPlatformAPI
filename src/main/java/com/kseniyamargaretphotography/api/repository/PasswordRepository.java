@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface PasswordRepository extends JpaRepository<Password, Long> {
 
@@ -12,5 +13,5 @@ public interface PasswordRepository extends JpaRepository<Password, Long> {
     Collection<Password> findAllByUserId(Long userId);
 
     @Query("SELECT p FROM Password p WHERE p.user.id = ?1 AND p.endDate IS NULL")
-    Password findUserCurrentPassword(Long userId);
+    Optional<Password> findUserCurrentPassword(Long userId);
 }

@@ -3,16 +3,19 @@ package com.kseniyamargaretphotography.api.services;
 import com.kseniyamargaretphotography.api.exceptions.NotFoundException;
 import com.kseniyamargaretphotography.api.interfaces.PasswordService;
 import com.kseniyamargaretphotography.api.models.Password;
+import com.kseniyamargaretphotography.api.models.User;
 import com.kseniyamargaretphotography.api.repository.PasswordRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class PasswordServiceImpl implements PasswordService {
 
     private final PasswordRepository passwordRepository;
@@ -30,7 +33,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public Password findUserCurrentPassword(Long userId) {
-        return passwordRepository.findUserCurrentPassword(userId);
+        return passwordRepository.findUserCurrentPassword(userId).orElse(null);
     }
 
     @Override
@@ -40,10 +43,10 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public void delete(Long passwordId) {
-        Password passwordToDelete = passwordRepository.findById(passwordId).orElse(null);
+        Password passwordToDelete = findById(passwordId);
 
         if (passwordToDelete == null) {
-            throw new NotFoundException(messageSource.getMessage("password.not.found", new Long[] {passwordId}, LocaleContextHolder.getLocale()));
+            throw new NotFoundException(messageSource.getMessage("default.not.found", new Object[]{Password.class.getSimpleName(), passwordId}, LocaleContextHolder.getLocale()));
         }
 
         passwordRepository.delete(passwordToDelete);

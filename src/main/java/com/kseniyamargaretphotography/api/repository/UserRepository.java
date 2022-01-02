@@ -10,6 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByEmail(String email);
 
-    @Query("SELECT u FROM User u join UserName un where un.userName LIKE ?1")
+    @Query("SELECT u FROM User u WHERE u.userName.userName LIKE ?1")
     Optional<User> findByUserName(String userName);
 }

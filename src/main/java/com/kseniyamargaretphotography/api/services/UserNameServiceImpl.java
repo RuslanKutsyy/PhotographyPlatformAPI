@@ -4,13 +4,15 @@ import com.kseniyamargaretphotography.api.exceptions.NotFoundException;
 import com.kseniyamargaretphotography.api.interfaces.UserNameService;
 import com.kseniyamargaretphotography.api.models.UserName;
 import com.kseniyamargaretphotography.api.repository.UserNameRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class UserNameServiceImpl implements UserNameService {
 
     private final UserNameRepository userNameRepository;
@@ -41,7 +43,9 @@ public class UserNameServiceImpl implements UserNameService {
         UserName userName = userNameRepository.findById(userNameId).orElse(null);
 
         if (userName == null) {
-            throw new NotFoundException(messageSource.getMessage("user.name.not.found", new Long[] {userNameId}, LocaleContextHolder.getLocale()));
+            throw new NotFoundException(messageSource.getMessage("default.not.found", new Object[]{UserName.class.getSimpleName(), userNameId}, LocaleContextHolder.getLocale()));
         }
+
+        userNameRepository.delete(userName);
     }
 }

@@ -1,10 +1,8 @@
 package com.kseniyamargaretphotography.api.interfaces;
 
-import com.kseniyamargaretphotography.api.DTO.UserDTO;
+import com.kseniyamargaretphotography.api.DTO.UserRegistrationDTO;
 import com.kseniyamargaretphotography.api.models.User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public interface UserService {
@@ -15,9 +13,11 @@ public interface UserService {
 
     User findByUserName(String userName);
 
-    void register(UserDTO userDto);
+    void register(UserRegistrationDTO userRegistrationDto);
 
     void save(User user);
 
     void delete(Long id);
+
+    void addUserRole(Long userId, Long roleId);
 }

@@ -3,14 +3,16 @@ package com.kseniyamargaretphotography.api.services;
 import com.kseniyamargaretphotography.api.interfaces.RoleService;
 import com.kseniyamargaretphotography.api.models.Role;
 import com.kseniyamargaretphotography.api.repository.RoleRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;

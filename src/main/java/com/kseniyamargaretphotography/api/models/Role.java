@@ -1,13 +1,11 @@
 package com.kseniyamargaretphotography.api.models;
 
-import com.kseniyamargaretphotography.api.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-
 import java.util.Collection;
 
 import static javax.persistence.GenerationType.IDENTITY;

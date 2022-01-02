@@ -12,10 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.HashSet;
 
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -52,12 +49,12 @@ public class User {
     private UserName userName;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "user_passwords",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "password_id", referencedColumnName = "id")}
     )
-    private Collection<Password> password;
+    private Collection<Password> passwords;
 
     @Column(name = "create_date", nullable = false)
     @CreationTimestamp
@@ -68,7 +65,7 @@ public class User {
 
     @JsonIgnore
     @Column(name = "roles", nullable = false)
-    @ManyToMany(cascade = CascadeType.ALL, fetch = EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
